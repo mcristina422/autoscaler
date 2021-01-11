@@ -1311,7 +1311,7 @@ func deleteNodeFromCloudProvider(node *apiv1.Node, cloudProvider cloudprovider.C
 func waitForDelayDeletion(node *apiv1.Node, nodeLister kubernetes.NodeLister, timeout time.Duration) errors.AutoscalerError {
 	if timeout != 0 && hasDelayDeletionAnnotation(node) {
 		klog.V(1).Infof("Wait for removing %s annotations on node %v", DelayDeletionAnnotationPrefix, node.Name)
-		err := wait.Poll(5*time.Second, timeout, func() (bool, error) {
+		err := wait.PollImmediate(5*time.Second, timeout, func() (bool, error) {
 			klog.V(5).Infof("Waiting for removing %s annotations on node %v", DelayDeletionAnnotationPrefix, node.Name)
 			freshNode, err := nodeLister.Get(node.Name)
 			if err != nil || freshNode == nil {
